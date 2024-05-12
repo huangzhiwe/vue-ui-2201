@@ -10,7 +10,21 @@ const routes=[
   {
     path: '/study/link',
     component: () => import('../view/study/Link.vue'),
+  },
+  {
+    path: '/study/pinia',
+    component: () => import('../view/study/Pinia.vue'),
+  },
+  {
+    path: '/study/pinia2',
+    component: () => import('../view/study/Pinia2.vue'),
+  },
+  {
+    path: '/study/ipinfo',
+    component: () => import('../view/study/IpInfo.vue'),
   }
+
+
 
 ];
 

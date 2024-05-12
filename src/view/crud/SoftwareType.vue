@@ -1,53 +1,17 @@
 <template>
   <div>
-    <!-- 表格 -->
-    <el-table :data="list" >
-      <el-table-column prop="stid" label="编号"></el-table-column>
-      <el-table-column prop="tname" label="名称"></el-table-column>
-      <el-table-column prop="intro" label="描述"></el-table-column>
-    </el-table>
-
-    <!-- {{ list }} -->
-    <el-pagination
-    background
-      layout="total, prev, pager,sizes, next, jumper"
-      v-model:current-page="page.pageNumber"
-      v-model:page-size="page.pageSizes"
-      :total="page.total"
-      :page-sizes="[3,5,10,20]"
-      @size-change="query"
-      @current-change="query"></el-pagination>
-
-  <PageComp :page="page" @info-change="query"></PageComp>
-    </div>
+    <SoftwareTypeSelector></SoftwareTypeSelector>
+  </div>
+  <!-- 
+    软件分类的删除，添加，修改功能完成
+    软件的修改，删除功能完成
+    游戏发行商和游戏功能，电影和电影排片功能
+  -->
 </template>
 
-<script setup >
+<script setup>
 import { ref } from 'vue';
-import { Api } from '../../script/Api';
-import { Tools } from '../../script/Tools';
-import { ElMessage } from 'element-plus';
-import pageComp from '.PageComp.vue';
-
-
-const page=ref({pageNumber:1,pageSize:10});
-const list=ref([]);
-
-const query=()=>{
-  Api.ajax(`/crud/softwaretype/${page.value.pageSize}/${page.value.pageNumber}`
-    ,{}
-    ,(data)=>{
-      if(data.success){
-        list.value=data.data.data;
-        page.value=data.data.pageBean;
-      }else{
-        ElMessage.error(data.message);
-      }
-    }
-  );
-};
-query();
-
+import SoftwareTypeSelector from '../../components/SoftwareTypeSelector.vue';
 </script>
 
 <style scoped></style>

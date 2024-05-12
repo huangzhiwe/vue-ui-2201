@@ -1,6 +1,9 @@
 <template>
   <div>  
-    <el-button type="primary" @click="add">添加软件</el-button>
+    <ElButton type="success" @click="showQTYpe">{{ qtype }}</ElButton>
+    <ElButton type="info" @click="query">查询</ElButton>
+    <ElButton type="info" @click="requery">重置</ElButton>
+    <el-button type="primary" @click="avisible=true">添加软件</el-button>
     </div>
   <div>
     <!-- {{ list }} -->
@@ -48,14 +51,14 @@
   </el-dialog>
 
   <el-dialog title="选择软件分类" v-model="stvisible">
-    <SoftwareTypeSelector @info-selected="typeSelected"></SoftwareTypeSelector>
+    <SoftwareTypeSelector mode="selector"  @info-change="typeSelected"></SoftwareTypeSelector>
   </el-dialog>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import { Api } from '../../script/Api';
-import { ElMessage, ElDialog } from 'element-plus';
+import { ElMessage, ElDialog,ElButton} from 'element-plus';
 
 import PageComp from '../../components/PageComp.vue';
 import SoftwareTypeSelector from '../../components/SoftwareTypeSelector.vue';
@@ -64,13 +67,18 @@ const stvisible = ref(false);
 const typemode = ref('');
 
 const typeSelected=(info)=>{
-  console.log('选择信息:',info)
   //判断模式进行数值操作
-  if('add'==tmode.value){
+  if(typemode.value=='add'){
     addInfo.value.stid=info.stid;
-    typeinfo.value=info.tname;
+    addType.value=info.tname;
+    stvisible.value=false;
+  }else if(typemode.value=='query'){
+    queryInfo.value.stid=info.stid;
+    qtype.value=info.tname;
+    stvisible.value=false;
   }
 };
+
 
 //#region 查询部分
 const page = ref({
@@ -83,7 +91,29 @@ const queryInfo = ref({
   sname: '',
   vendor: '',
 });
+
+const showQTYpe=()=>{
+  stvisible.value=true;
+  typemode.value='query';
+};
+
+const qtype=ref('请选择分类');
+
 const list = ref([]);
+
+const requery=()=>{
+  page.value={
+    pageNumber:1,
+    pageSize:10
+  };
+  queryInfo.value={
+    stid:-1,
+    sname:'',
+    vendor:''
+  };
+  qtype.value='请选择分类';
+  query();
+}
 
 const query = () => {
   Api.get(
@@ -111,7 +141,7 @@ const addInfo = ref({
 });
 
 const addType = ref('请选择分类');
-const avisible = ref(true);
+const avisible = ref(false);
 
 const resetAdd = () => {
   addInfo.value = {
@@ -122,7 +152,16 @@ const resetAdd = () => {
   };
   addType.value = '请选择分类';
 };
-const add = () => {};
+const add = () => {
+Api.post('/crud/software',addInfo.value,(data)=>{
+  if(data.success){
+    ElMessage.success(data.message);
+    resetAdd();
+  }else{
+    ElMessage.error(data.message);
+  }
+})
+};
 
 const showAddSelector = () => {
   stvisible.value = true;
