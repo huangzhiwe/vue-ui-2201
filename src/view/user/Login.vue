@@ -19,7 +19,7 @@
       </div>
 
       <template #footer>
-        <el-button type="primary" @click="login"> 登录 </el-button>
+        <el-button v-loading="loading" type="primary" @click="login"> 登录 </el-button>
       </template>
     </el-card>
   </div>
@@ -31,16 +31,28 @@ import { Api } from '../../script/Api';
 //导入路由器对象
 import { useRouter } from 'vue-router';
 const router = useRouter();
+
+import { storeToRefs } from 'pinia';
+import userstore from '../../store/user';
+const {update } = userstore();
+
+
 const user = ref({
   username: '',
   password: '',
 });
+
+const loading = ref(false);
+
 const login = () => {
+  loading.value = true;
   Api.post('/auth', user.value, (data) => {
     if (data.success) {
       ElMessage.success(data.message);
-      router.push('/user/main')
+      update(()=>{router.push('/user/main');
+      });
     } else {
+      loading.value = false;
       ElMessage.error(data.message);
     }
   });

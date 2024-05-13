@@ -1,10 +1,19 @@
 <template>
+  <UserInfoComp></UserInfoComp>
   <div>
-    用户首页
+    {{ isLogin }}
+    <hr/>
+    {{ user }}
   </div>
 </template>
 <script setup>
-import { ref } from 'vue'
+import { ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import userStore from '../../store/user';
+import UserInfoComp from '../../components/UserInfoComp.vue';
+
+const {isLogin,user} =storeToRefs(userStore());
+
 </script>
-<style>
+<style scoped>
 </style>
