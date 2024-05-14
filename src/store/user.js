@@ -1,37 +1,33 @@
-import {defineStore} from 'pinia';
-import {Api} from "../script/Api";
+import { defineStore } from 'pinia';
+import { Api } from '../script/Api';
 
 const empty = {
-  tbUser:{},
-  tbUserInfo:{},
-  tbRole:{},
-  exInfo:{},
-
-
+  tbUser: {},
+  tbUserInfo: {},
+  tbRole: {},
+  exInfo: {},
 };
 
-
-const store =defineStore('user',{
+const store = defineStore('user', {
   state() {
-    return{
-      isLogin:false,
-      user:empty,
+    return {
+      isLogin: false,
+      user: empty,
     };
   },
-  actions:{
+  actions: {
     update(cb) {
       let instance = this;
-      Api.get('/auth',{},(data)=>{
-        if(data.success){
+      Api.get('/auth', {}, (data) => {
+        if (data.success) {
           instance.isLogin = true;
           instance.user = data.data;
-        }else{
+        } else {
           instance.isLogin = false;
           instance.user = empty;
         }
-        
-        cb?.(data.success);
 
+        cb?.(data.success);
       });
     },
   },

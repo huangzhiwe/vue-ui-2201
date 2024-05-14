@@ -61,6 +61,10 @@ const Api = {
         cb({ code: 520, message: '网站, 请稍后尝试', success: false });
       });
   },
+  getUserLogo: (uid) => {
+    return `${BASE_URL}/user/logo/${uid}?request_token=${LocalToken.load()}`;
+
+  },
 };
 
 export { Api as default, Api as Api, LocalToken as LocalToken };

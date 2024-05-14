@@ -1,4 +1,5 @@
 <template>
+  <UserInfoComp/>
   <div>
     <div v-for="d in menus">
       <div @click="toPage(d.path)">
@@ -11,6 +12,7 @@
 <script setup>
 import{ref}from'vue'
 import { useRouter } from 'vue-router';
+import UserInfoComp from '../components/UserInfoComp.vue';
 const router = useRouter();
 const menus=[{
   title:'新闻',
