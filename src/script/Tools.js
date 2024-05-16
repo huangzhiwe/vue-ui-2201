@@ -3,6 +3,20 @@
  */
 class Tools {
 
+	static browseImage(cb){
+		//通过input的file元素浏览图片
+		let input = document.createElement('input');
+		input.setAttribute('type','file');
+		input.setAttribute('accept','image/*');
+
+		//监听文件选中变化事件
+		input.addEventListener('change',()=>{
+			let file =input.files[0];
+			cb(file);
+		});
+		input.click();
+	}
+
 	static replaceInfoImg(info) {
 		if (!info) {
 			return info;

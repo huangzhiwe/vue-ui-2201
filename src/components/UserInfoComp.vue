@@ -101,6 +101,7 @@ import {
   ElRadioGroup,
   ElRadio,
 } from 'element-plus';
+import { Tools } from '../script/Tools';
 const { info, ipinfo, weather } = storeToRefs(ipstore());
 const { isLogin, user } = storeToRefs(useStore());
 const{update}=useStore();
@@ -119,9 +120,32 @@ const handleMenu =(command)=>{
     logout();
   }else if(command == 'userinfo'){
     showModifyUser();
+  }else if(command == 'userlogo'){
+    modifyUserLogo();
   }
   
 }
+//#endregion修改用户头像
+
+const modifyUserLogo=()=>{
+  Tools.browseImage((file)=>{
+    console.log('选中文件',file);
+    Api.upload('/user/logo',file,{},(data)=>{
+      if(data.success) {
+        location.reload();
+      }else{
+        ElMessage.error(data.message);
+      }
+    })
+
+
+  });
+}
+
+//#region 
+
+
+
 //#endregion
 
 

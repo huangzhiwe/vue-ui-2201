@@ -1,4 +1,5 @@
 //后端接口访问
+import { Key } from '@element-plus/icons-vue';
 import axios from 'axios';
 import qs from 'qs';
 const BASE_URL = 'https://api.huhuiyu.top/';
@@ -48,6 +49,7 @@ const Api = {
       data: param,
       headers: {
         Authorization: LocalToken.load(),
+        
       },
     });
     //处理结果
@@ -61,9 +63,37 @@ const Api = {
         cb({ code: 520, message: '网站, 请稍后尝试', success: false });
       });
   },
+  upload: (url, file, param, cb) => {
+    //文件只能用FormData上传
+    let formData = new FormData();
+    formData.append('file', file);
+    for (let Key in param) {
+      formData.append(Key, param[Key]);
+    }
+
+    let promise = axios({
+      url: BASE_URL + url,
+      method: 'post',
+      data: formData,
+      headers: {
+        Authorization: LocalToken.load(),
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    promise
+      .then((response) => {
+        LocalToken.save(response.data);
+        cb(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+        cb({ code: 520, message: '网站, 请稍后尝试', success: false });
+      });
+  },
+
   getUserLogo: (uid) => {
     return `${BASE_URL}/user/logo/${uid}?request_token=${LocalToken.load()}`;
-
   },
 };
 
