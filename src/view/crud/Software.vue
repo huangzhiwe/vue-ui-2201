@@ -1,4 +1,5 @@
 <template>
+  <UserInfoComp></UserInfoComp>
   <div>  
     <ElButton type="success" @click="showQTYpe">{{ qtype }}</ElButton>
     <ElButton type="info" @click="query">查询</ElButton>
@@ -59,6 +60,7 @@
 import { ref } from 'vue';
 import { Api } from '../../script/Api';
 import { ElMessage, ElDialog,ElButton} from 'element-plus';
+import UserInfoComp from '../../components/UserInfoComp.vue';
 
 import PageComp from '../../components/PageComp.vue';
 import SoftwareTypeSelector from '../../components/SoftwareTypeSelector.vue';
@@ -168,6 +170,8 @@ const showAddSelector = () => {
   typemode.value = 'add';
 };
 //#endregion
+
+
 </script>
 
 <style scoped></style>

@@ -1,4 +1,5 @@
 <template>
+   
   <div>
     查询表单
     <el-button>查询</el-button>
@@ -37,6 +38,7 @@
 import { ref } from 'vue';
 import { Api } from '../script/Api';
 import { ElMessage } from 'element-plus';
+
 import pageComp from './PageComp.vue';
 const emits = defineEmits(['info-change']);
 const props =defineProps(['mode']);
